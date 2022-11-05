@@ -34,7 +34,7 @@ export default {
       // 通过 actions 属性来定义菜单选项
       actions: [
         { text: '退出登录' },
-        { text: '修改密码', disabled },
+        { text: '修改密码' },
         { text: '管理应用', disabled },
         { text: '更新日志' },
         { text: '问题反馈' },

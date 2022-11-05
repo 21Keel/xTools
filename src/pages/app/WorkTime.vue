@@ -167,6 +167,13 @@ export default {
       return this.workTimeData.filter(d => !d.overtime).length * 8
     },
   },
+  created() {
+    // 本地缓存
+    const localData = localStorage.getItem('workTimeData')
+    if (localData) {
+      this.workTimeData = JSON.parse(localData)
+    }
+  },
   methods: {
     // 返回
     onBack() {
@@ -196,6 +203,7 @@ export default {
       const index = this.workTimeData.findIndex(d => d.date === this.formData.date)
       if (index) {
         this.workTimeData.splice(index, 1)
+        this.saveLocal()
       }
       this.showEditor = false
     },
@@ -231,6 +239,12 @@ export default {
           return new Date(a.date) - new Date(b.date)
         })
       }
+      this.saveLocal()
+    },
+    // 本地缓存
+    saveLocal() {
+      localStorage.setItem('workTimeData', JSON.stringify(this.workTimeData))
+      Toast('保存成功')
     },
   },
 }
