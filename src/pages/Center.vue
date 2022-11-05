@@ -17,7 +17,7 @@
         :key="item.id"
         :text="item.name"
         :icon="item.icon || 'photo-o'"
-        @click="openApp(item)"
+        @click="item.path ? openApp(item.path) : Toast('维护中，暂不可用')"
       >
       </van-grid-item>
     </van-grid>
@@ -33,31 +33,43 @@ export default {
       showPopover: false,
       // 通过 actions 属性来定义菜单选项
       actions: [
-        { text: '退出登录' },
+        { text: '退出登录', action: () => this.openApp('/login') },
         { text: '修改密码' },
         { text: '管理应用', disabled },
-        { text: '更新日志' },
+        { text: '更新日志', action: () => this.openApp('/system/log') },
         { text: '问题反馈' },
+        { text: '用户配置' },
       ],
       // 应用列表数据
       appListData: [
         {
           id: 'work-time-rec',
           name: '工时记录',
-          path: '/workTime',
+          path: '/work-time',
           icon: 'clock-o',
+        },
+        {
+          id: 'get-box',
+          name: '收集箱',
+          path: '',
+          icon: 'comment-o',
         },
       ],
     }
   },
   methods: {
+    Toast,
     // 打开扩展功能
-    onSelect(action) {
-      Toast(`${action.text}还在开发中`)
+    onSelect(item) {
+      if (item.action) {
+        item.action()
+      } else {
+        Toast(`${item.text}还在开发中`)
+      }
     },
     // 打开应用
-    openApp(data) {
-      this.$router.push(data.path)
+    openApp(path) {
+      this.$router.push(path)
     },
   },
 }

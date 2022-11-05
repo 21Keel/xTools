@@ -11,10 +11,16 @@ export default [
     path: '/center',
     component: () => import('@/pages/Center.vue'),
   },
+  // 更新日志
+  {
+    name: 'system-log',
+    path: '/system/log',
+    component: () => import('@/pages/system/Log.vue'),
+  },
   // 工时记录
   {
     name: 'work-time',
-    path: '/workTime',
+    path: '/work-time',
     component: () => import('@/pages/app/WorkTime.vue'),
   },
   // 重定向

@@ -1,5 +1,9 @@
 <template>
   <div class="p-login">
+    <article>
+      <div>Hello World</div>
+      <div class="desc">From small beginning come great things.</div>
+    </article>
     <van-form @submit="onSubmit">
       <van-field
         v-model="formData.username"
@@ -7,6 +11,7 @@
         label="用户名"
         placeholder="用户名"
         :rules="[{ required: true, message: '请填写用户名' }]"
+        autocomplete="off"
       />
       <van-field
         v-model="formData.password"
@@ -36,7 +41,10 @@ export default {
   },
   methods: {
     onSubmit() {
-      Toast('登录成功')
+      setTimeout(() => {
+        Toast('登录成功')
+        this.$router.push('/center')
+      }, 1000)
     },
   },
 }
@@ -46,5 +54,20 @@ export default {
   width: 100vw;
   height: 100vh;
   background-color: var(--color-background);
+  article {
+    position: relative;
+    height: 70px;
+    line-height: 70px;
+    font-size: 24px;
+    text-align: center;
+    .desc {
+      position: absolute;
+      top: 20px;
+      left: 0;
+      width: 100%;
+      font-size: 12px;
+      text-align: center;
+    }
+  }
 }
 </style>
