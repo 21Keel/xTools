@@ -1,0 +1,52 @@
+{
+  "name": "mo-app",
+  "version": "1.0.0",
+  "author": "keel",
+  "private": true,
+  "scripts": {
+    "start": "vue-cli-service serve"
+  },
+  "dependencies": {
+    "axios": "0.27.2",
+    "core-js": "^3.6.5",
+    "dayjs": "^1.11.3",
+    "less": "4.1.3",
+    "less-loader": "6.0.0",
+    "vant": "^2.12.51",
+    "vue": "^2.6.11",
+    "vue-router": "^3.5.3",
+    "vuex": "^3.6.2"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.6",
+    "@vue/cli-plugin-eslint": "~4.5.6",
+    "@vue/cli-service": "~4.5.6",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.2.2",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {
+      "no-unused-vars": "off",
+      "no-debugger": "off",
+      "vue/no-unused-vars": "off"
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
