@@ -10,7 +10,15 @@ export default {
   data() {
     return {}
   },
-  created() {},
+  created() {
+    // token 检查
+    const localToken = localStorage.getItem('token')
+    if (localToken) {
+      this.$store.commit('setToken', localToken)
+    } else {
+      this.$router.push('/login')
+    }
+  },
   methods: {},
 }
 </script>

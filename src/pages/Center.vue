@@ -33,7 +33,7 @@ export default {
       showPopover: false,
       // 通过 actions 属性来定义菜单选项
       actions: [
-        { text: '退出登录', action: () => this.openApp('/login') },
+        { text: '退出登录', action: () => this.logout() },
         { text: '修改密码' },
         { text: '管理应用', disabled },
         { text: '更新日志', action: () => this.openApp('/system/log') },
@@ -68,9 +68,16 @@ export default {
       }
     },
     // 打开应用
-    openApp(path) {
-      this.$router.push(path)
+    // @param traceless { Boolean } 无痕模式
+    openApp(path, traceless = false) {
+      traceless ? this.$router.replace(path) : this.$router.push(path)
     },
+    // 登出
+    logout() {
+      localStorage.setItem('token', '')
+      this.$store.commit('setToken', '')
+      this.$router.replace('/login')
+    }
   },
 }
 </script>

@@ -4,6 +4,8 @@
     <van-nav-bar title="更新记录" left-arrow @click-left="$router.push('/center')" class="header mb-10"></van-nav-bar>
     <!-- 更新记录-->
     <div>
+      <div class="item-title">2022/11/06</div>
+      <van-panel title="工时记录模块 v0.2" desc="导出JSON、切换月份"> </van-panel>
       <div class="item-title">2022/11/05</div>
       <van-panel title="工时记录模块 v0.1" desc="基础功能、统计、本地缓存"> </van-panel>
       <van-panel title="应用基础框架 v0.1" desc="应用中心、更新日志"> </van-panel>
@@ -12,7 +14,6 @@
 </template>
 <script>
 import { Toast } from 'vant'
-import DAY from 'dayjs'
 export default {
   name: 'SystemLog',
   data() {

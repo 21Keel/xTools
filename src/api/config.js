@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { SERVER_PATH } from '@/config'
+import store from '@/store'
 
 const apiCall = axios.create({
   baseURL: SERVER_PATH,
@@ -7,7 +8,8 @@ const apiCall = axios.create({
 
 // 请求拦截器
 apiCall.interceptors.request.use(config => {
-  // config.headers['token'] = TOKEN
+  const token = store.state.token || ''
+  config.headers['token'] = token
   return config
 })
 

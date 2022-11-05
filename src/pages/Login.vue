@@ -39,12 +39,32 @@ export default {
       },
     }
   },
+  created() {
+    const token = localStorage.getItem('token')
+    if (token) {
+      const keyArr = token.split('&')
+      this.formData.username = keyArr[0]
+      this.formData.password = keyArr[1]
+    }
+  },
   methods: {
     onSubmit() {
-      setTimeout(() => {
-        Toast('登录成功')
-        this.$router.push('/center')
-      }, 1000)
+      // 检查，不能包含特殊字符 &
+      const rule = /^\w+$/
+      const { username, password } = this.formData
+      if (rule.test(username) && rule.test(password)) {
+        setTimeout(() => {
+          Toast('登录成功')
+          // @TODO
+          // 设置 token
+          const token = `${username}&${password}`
+          localStorage.setItem('token', token)
+          this.$store.commit('setToken', token)
+          this.$router.push('/center')
+        }, 1000)
+      } else {
+        Toast('只能输入大小写字母和数字')
+      }
     },
   },
 }

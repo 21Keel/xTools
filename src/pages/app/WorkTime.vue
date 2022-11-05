@@ -11,12 +11,16 @@
       </template>
     </van-nav-bar>
     <!-- 统计与过滤面板 -->
-    <van-panel title="工时统计（当前/必需）" :desc="status.yearAndMonth" :status="`${curTotal} / ${curRequiredTotal}`">
+    <van-panel
+      title="工时统计（当前/必需）"
+      :desc="`${status.year} / ${status.month}`"
+      :status="`${curTotal} / ${curRequiredTotal}`"
+    >
     </van-panel>
     <!-- 当月记录列表 -->
     <van-list>
       <van-cell @click="addItem">新增/更新记录</van-cell>
-      <van-cell v-for="item in workTimeData" :key="item.date" :title="item.date" @click="editItem(item)">
+      <van-cell v-for="item in workTimeDataFilter" :key="item.date" :title="item.date" @click="editItem(item)">
         <div class="day-item">
           <span>{{ item.start }}</span>
           <span>{{ item.end }}</span>
@@ -93,29 +97,50 @@
     <van-popup v-model="showEndPicker" position="bottom">
       <van-datetime-picker :value="'18:30'" type="time" @confirm="onEndConfirm" @cancel="showEndPicker = false" />
     </van-popup>
+    <!-- 切换月份 -->
+    <van-popup v-model="showYearMonthPicker" position="bottom">
+      <van-datetime-picker
+        :value="new Date()"
+        type="year-month"
+        title="选择年月"
+        :min-date="new Date(2022, 0)"
+        :max-date="new Date(2032, 1)"
+        @change="Toast"
+        @cancel="showYearMonthPicker = false"
+        @confirm="confirmYM"
+      />
+    </van-popup>
   </div>
 </template>
 <script>
 import { Toast } from 'vant'
 import DAY from 'dayjs'
+import { exportJsonFile } from '@/utils'
 export default {
   name: 'WorkTime',
   data() {
     const disabled = true
     return {
       status: {
-        yearAndMonth: '2022/11',
+        year: 2022,
+        month: 11,
       },
       showPopover: false,
       actions: [
         { text: '添加数据', action: () => this.addItem() },
-        { text: '切换月份' },
-        { text: '导出数据', disabled },
+        {
+          text: '切换月份',
+          action: () => {
+            this.showYearMonthPicker = true
+          },
+        },
+        { text: '导出数据', action: () => this.exportData() },
       ],
       showEditor: false,
       showDatePicker: false,
       showStartPicker: false,
       showEndPicker: false,
+      showYearMonthPicker: false,
       formData: {
         date: '',
         start: '',
@@ -145,6 +170,12 @@ export default {
     }
   },
   computed: {
+    // 数据过滤
+    workTimeDataFilter() {
+      return this.workTimeData.filter(d => {
+        return DAY(d.date).format('YYYY') == this.status.year && DAY(d.date).format('MM') == this.status.month
+      })
+    },
     // 日工时计算
     dayTotal() {
       return (start, end) => new Date('2022-01-01 ' + end) - new Date('2022-01-01 ' + start) - 90 * 60 * 1000
@@ -154,7 +185,7 @@ export default {
     },
     // 当前总工时
     curTotal() {
-      const totalMS = this.workTimeData
+      const totalMS = this.workTimeDataFilter
         .filter(d => !d.overtime)
         .reduce((p, v) => {
           const time = this.dayTotal(v.start, v.end)
@@ -164,7 +195,7 @@ export default {
     },
     // 当前应出勤
     curRequiredTotal() {
-      return this.workTimeData.filter(d => !d.overtime).length * 8
+      return this.workTimeDataFilter.filter(d => !d.overtime).length * 8
     },
   },
   created() {
@@ -220,6 +251,12 @@ export default {
       this.formData.end = time
       this.showEndPicker = false
     },
+    // 选择年月
+    confirmYM(val) {
+      this.status.year = DAY(val).format('YYYY')
+      this.status.month = DAY(val).format('MM')
+      this.showYearMonthPicker = false
+    },
     // 编辑完成
     onSubmit() {
       const { date, start, end } = this.formData
@@ -245,6 +282,11 @@ export default {
     saveLocal() {
       localStorage.setItem('workTimeData', JSON.stringify(this.workTimeData))
       Toast('保存成功')
+    },
+    // 导出数据
+    exportData() {
+      Toast('导出数据中，请确认浏览器可以下载文件')
+      exportJsonFile(this.workTimeData, `workTimeData ${DAY().format('YYYY-MM-DD HH:MM:SS')}.json`)
     },
   },
 }
