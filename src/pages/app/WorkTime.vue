@@ -286,7 +286,7 @@ export default {
     // 导出数据
     exportData() {
       Toast('导出数据中，请确认浏览器可以下载文件')
-      exportJsonFile(this.workTimeData, `workTimeData ${DAY().format('YYYY-MM-DD HH:MM:SS')}.json`)
+      exportJsonFile(this.workTimeData, `workTimeData ${DAY().format('YYYY-MM-DD HH_MM_ss')}.json`)
     },
   },
 }
@@ -296,7 +296,6 @@ export default {
   width: 100vw;
   height: 100vh;
   background-color: var(--color-background);
-  overflow: hidden;
   .day-item {
     display: flex;
     justify-content: space-between;
