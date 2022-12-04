@@ -121,9 +121,10 @@ export default {
   data() {
     const disabled = true
     return {
+      // @TODO 日期获取优化
       status: {
         year: 2022,
-        month: 11,
+        month: 12,
       },
       showPopover: false,
       actions: [
@@ -267,7 +268,7 @@ export default {
       // 判断是否存在该日期
       const index = this.workTimeData.findIndex(d => d.date === date)
       if (index >= 0) {
-        this.workTimeData[index] = { ...this.formData }
+        this.$set(this.workTimeData, index, { ...this.formData })
         Toast('更新完成')
       } else {
         this.workTimeData.push({ ...this.formData })
